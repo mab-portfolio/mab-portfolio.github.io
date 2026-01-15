@@ -291,32 +291,73 @@
    </script>
 
    
-   <script>
-   // open image in lightbox
-   document.querySelectorAll('#section-portfolio .portfolio-grid img').forEach(img => {
-     img.addEventListener('click', e => {
-       e.stopPropagation();
-       document.getElementById('lightbox-img').src = img.src;
+<script>
+  // 1) Make a list of all images in your grid
+  const galleryImages = Array.from(
+    document.querySelectorAll('#section-portfolio .portfolio-grid img')
+  );
 
-       // Grab info from data attributes
-       const title = img.getAttribute('data-title') || '';
-       const size = img.getAttribute('data-size') || '';
-       const year = img.getAttribute('data-year') || '';
-       const medium = img.getAttribute('data-medium') || '';
-       let captionHTML = '';
-       if (title) captionHTML += `<span class="art-title">${title}</span>`;
-       let details = [];
-       if (medium) details.push(medium);
-       if (size) details.push(size);
-       if (year) details.push(year);
-       if (details.length > 0) {
-         captionHTML += `<br><span class="art-details">${details.join(' &nbsp;|&nbsp; ')}</span>`;
-       }
-       document.getElementById('lightbox-caption').innerHTML = captionHTML;
+  let currentIndex = 0;
 
-       document.getElementById('lightbox-overlay').style.display = 'flex';
-     });
-   });
+  // 2) A function that shows one image (by index) in the lightbox
+  function showImage(index) {
+    currentIndex = index;
+
+    const img = galleryImages[currentIndex];
+    document.getElementById('lightbox-img').src = img.src;
+
+    const title  = img.getAttribute('data-title')  || '';
+    const size   = img.getAttribute('data-size')   || '';
+    const year   = img.getAttribute('data-year')   || '';
+    const medium = img.getAttribute('data-medium') || '';
+
+    let captionHTML = '';
+    if (title) captionHTML += `<span class="art-title">${title}</span>`;
+
+    const details = [];
+    if (medium) details.push(medium);
+    if (size) details.push(size);
+    if (year) details.push(year);
+
+    if (details.length) {
+      captionHTML += `<br><span class="art-details">${details.join(' &nbsp;|&nbsp; ')}</span>`;
+    }
+
+    document.getElementById('lightbox-caption').innerHTML = captionHTML;
+  }
+
+  // 3) Open lightbox when clicking any thumbnail
+  galleryImages.forEach((img, i) => {
+    img.addEventListener('click', () => {
+      document.getElementById('lightbox-overlay').style.display = 'flex';
+      showImage(i);
+    });
+  });
+
+  // 4) Prev/Next button actions
+  document.querySelector('.lightbox-prev').addEventListener('click', (e) => {
+    e.stopPropagation();
+    const prevIndex = (currentIndex - 1 + galleryImages.length) % galleryImages.length;
+    showImage(prevIndex);
+  });
+
+  document.querySelector('.lightbox-next').addEventListener('click', (e) => {
+    e.stopPropagation();
+    const nextIndex = (currentIndex + 1) % galleryImages.length;
+    showImage(nextIndex);
+  });
+
+  // 5) Close ONLY with X button
+  function closeLightbox() {
+    document.getElementById('lightbox-overlay').style.display = 'none';
+  }
+
+  document.querySelector('.lightbox-close').addEventListener('click', (e) => {
+    e.stopPropagation();
+    closeLightbox();
+  });
+</script>
+
 
    // close handler for the close button
    function closeLightbox() {
