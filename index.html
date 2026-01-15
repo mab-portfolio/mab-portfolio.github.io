@@ -290,16 +290,26 @@
      });
    </script>
 
-   
-<script>
-  // 1) Make a list of all images in your grid
+   <!-- full-screen image lightbox -->
+<div id="lightbox-overlay">
+  <button class="lightbox-close" aria-label="Close">&times;</button>
+
+  <button class="lightbox-prev" aria-label="Previous image">&#10094;</button>
+  <button class="lightbox-next" aria-label="Next image">&#10095;</button>
+
+  <div class="lightbox-img-wrapper">
+    <img id="lightbox-img" src="" alt="">
+    <div id="lightbox-caption"></div>
+  </div>
+</div>
+
+  <script>
   const galleryImages = Array.from(
     document.querySelectorAll('#section-portfolio .portfolio-grid img')
   );
 
   let currentIndex = 0;
 
-  // 2) A function that shows one image (by index) in the lightbox
   function showImage(index) {
     currentIndex = index;
 
@@ -326,7 +336,11 @@
     document.getElementById('lightbox-caption').innerHTML = captionHTML;
   }
 
-  // 3) Open lightbox when clicking any thumbnail
+  function closeLightbox() {
+    document.getElementById('lightbox-overlay').style.display = 'none';
+  }
+
+  // Open
   galleryImages.forEach((img, i) => {
     img.addEventListener('click', () => {
       document.getElementById('lightbox-overlay').style.display = 'flex';
@@ -334,7 +348,7 @@
     });
   });
 
-  // 4) Prev/Next button actions
+  // Prev / Next
   document.querySelector('.lightbox-prev').addEventListener('click', (e) => {
     e.stopPropagation();
     const prevIndex = (currentIndex - 1 + galleryImages.length) % galleryImages.length;
@@ -347,37 +361,12 @@
     showImage(nextIndex);
   });
 
-  // 5) Close ONLY with X button
-  function closeLightbox() {
-    document.getElementById('lightbox-overlay').style.display = 'none';
-  }
-
+  // Close button
   document.querySelector('.lightbox-close').addEventListener('click', (e) => {
     e.stopPropagation();
     closeLightbox();
   });
 </script>
-
-
-   // close handler for the close button
-   function closeLightbox() {
-   document.getElementById('lightbox-overlay').style.display = 'none';
-   }
-
-   </script>
-   <!-- full-screen image lightbox -->
-<div id="lightbox-overlay">
-  <button class="lightbox-close" aria-label="Close">&times;</button>
-
-  <button class="lightbox-prev" aria-label="Previous image">&#10094;</button>
-  <button class="lightbox-next" aria-label="Next image">&#10095;</button>
-
-  <div class="lightbox-img-wrapper">
-    <img id="lightbox-img" src="" alt="">
-    <div id="lightbox-caption"></div>
-  </div>
-</div>
-
 
   </body>
 </html>
