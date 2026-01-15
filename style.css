@@ -252,7 +252,7 @@ main.fade-in-container {
   align-items: center;
   flex-direction: column;
   z-index: 3000;
-  cursor: pointer;
+  cursor: default;
 }
 .lightbox-img-wrapper {
   display: flex;
@@ -302,6 +302,21 @@ main.fade-in-container {
 .lightbox-next{ right: 16px; }
 
 
+.lightbox-prev:hover,
+.lightbox-next:hover,
+.lightbox-prev:focus-visible,
+.lightbox-next:focus-visible{
+  background: rgba(255,255,255,0.9);
+  color: #31352a;
+}
+
+.lightbox-prev,
+.lightbox-next{
+  border-radius: 999px;  /* round pill button */
+  line-height: 1;        /* keeps arrow centered */
+}
+
+
 #lightbox-caption {
   width: 100%;
   max-width: 520px;
@@ -335,6 +350,12 @@ main.fade-in-container {
     max-height: calc(85vh - 60px);
     padding-top: 40px;
   }
+
+  .lightbox-prev, .lightbox-next{
+  font-size: 1.8rem;
+  padding: 8px 12px;
+}
+  
   #lightbox-overlay img {
   max-width: 90%;
   max-height: 85%;
